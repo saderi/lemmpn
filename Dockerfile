@@ -143,7 +143,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
   && ln -sf /dev/stdout /var/log/nginx/access.log \
   && ln -sf /dev/stderr /var/log/nginx/error.log
 
-RUN apk add --no-cache --virtual .build-deps \
+RUN apk add --no-cache \
     libjpeg-turbo-dev \
     libpng-dev \
     freetype-dev \
@@ -189,13 +189,14 @@ RUN apk add --no-cache --virtual .build-deps \
     && php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_SIGNATURE}') { echo 'Composer.phar Installer verified'; } else { echo 'Composer.phar Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
     && php composer-setup.php --install-dir=/usr/bin --filename=composer \
     && php -r "unlink('composer-setup.php');" \
-    && pip install -U pip \
-    && apk del .build-deps
+    && pip install -U pip
+
 
 RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/v3.8/main nodejs npm
 
 RUN apk add --no-cache \
     bash \
+    libmcrypt-dev \
     curl \
     wget \
     git \
@@ -239,6 +240,8 @@ RUN echo "cgi.fix_pathinfo=1" > ${php_vars} &&\
 
 ADD conf/start.sh /start.sh
 RUN chmod 755 /start.sh
+
+RUN composer global require laravel/installer
 
 ENV WEBROOT=/var/www/html
 
