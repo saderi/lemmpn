@@ -147,6 +147,7 @@ RUN apk add --no-cache \
     libjpeg-turbo-dev \
     libpng-dev \
     freetype-dev \
+    libzip-dev \
     gd \
     icu-dev \
     libxslt-dev \
