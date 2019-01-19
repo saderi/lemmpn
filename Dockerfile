@@ -148,7 +148,6 @@ RUN apk add --no-cache \
     libpng-dev \
     freetype-dev \
     gd \
-    libmcrypt-dev \
     icu-dev \
     libxslt-dev \
     autoconf \
@@ -165,7 +164,6 @@ RUN apk add --no-cache \
     iconv \
     mysqli \
     mbstring \
-    mcrypt \
     gd \
     exif \
     intl \
@@ -196,7 +194,6 @@ RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/v3.8/main
 
 RUN apk add --no-cache \
     bash \
-    libmcrypt-dev \
     curl \
     wget \
     git \
