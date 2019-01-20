@@ -148,6 +148,7 @@ RUN apk add --no-cache \
     libpng-dev \
     freetype-dev \
     libzip-dev \
+    zip \
     gd \
     icu-dev \
     libxslt-dev \
@@ -159,6 +160,7 @@ RUN apk add --no-cache \
       --with-freetype-dir=/usr/include/ \
       --with-png-dir=/usr/include/ \
       --with-jpeg-dir=/usr/include/ \
+      zip --with-libzip \
     && docker-php-ext-install bcmath \
     pdo \
     pdo_mysql \
