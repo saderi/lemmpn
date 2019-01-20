@@ -160,14 +160,14 @@ RUN apk add --no-cache \
       --with-freetype-dir=/usr/include/ \
       --with-png-dir=/usr/include/ \
       --with-jpeg-dir=/usr/include/ \
-      zip --with-libzip \
-    && docker-php-ext-install bcmath \
+    && docker-php-ext-install gd \
+    && docker-php-ext-configure zip --with-libzip \
+    docker-php-ext-install bcmath \
     pdo \
     pdo_mysql \
     iconv \
     mysqli \
     mbstring \
-    gd \
     exif \
     intl \
     xsl \
