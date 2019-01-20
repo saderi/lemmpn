@@ -162,7 +162,7 @@ RUN apk add --no-cache \
       --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd \
     && docker-php-ext-configure zip --with-libzip \
-    docker-php-ext-install bcmath \
+    && docker-php-ext-install bcmath \
     pdo \
     pdo_mysql \
     iconv \
