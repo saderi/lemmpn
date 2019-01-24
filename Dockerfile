@@ -202,6 +202,8 @@ RUN apk add --no-cache \
     git \
     supervisor
 
+RUN composer global require laravel/installer
+
 ADD conf/supervisord.conf /etc/supervisord.conf
 
 RUN rm -Rf /etc/nginx/nginx.conf
@@ -215,7 +217,6 @@ rm -Rf /var/www/* && \
 mkdir -p /var/www/html/public
 ADD conf/nginx-site.conf /etc/nginx/sites-available/default.conf
 RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf
-
 
 # tweak php-fpm config
 RUN echo "cgi.fix_pathinfo=1" > ${php_vars} &&\
@@ -240,11 +241,6 @@ RUN echo "cgi.fix_pathinfo=1" > ${php_vars} &&\
 
 ADD conf/start.sh /start.sh
 RUN chmod 755 /start.sh
-
-RUN composer global require laravel/installer
-
 ENV WEBROOT=/var/www/html
-
 EXPOSE 80
-
 CMD ["/start.sh"]
