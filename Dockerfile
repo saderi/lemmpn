@@ -173,10 +173,9 @@ RUN apk add --no-cache \
     dom \
     zip \
     opcache \
-    && pecl install xdebug \
     && pecl install redis \
     && pecl install mongodb \
-    && docker-php-ext-enable redis xdebug mongodb \
+    && docker-php-ext-enable redis mongodb \
     && docker-php-source delete \
     && mkdir -p /etc/nginx \
     && mkdir -p /var/www/app \
