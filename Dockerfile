@@ -162,6 +162,7 @@ RUN apk add --no-cache \
     pdo \
     pdo_mysql \
     iconv \
+    mysql \
     mysqli \
     mbstring \
     gd \
@@ -175,7 +176,7 @@ RUN apk add --no-cache \
     opcache \
     && pecl install redis \
     && pecl install mongodb \
-    && docker-php-ext-enable redis mongodb \
+    && docker-php-ext-enable redis mysql pdo_mysql mongodb \
     && docker-php-source delete \
     && mkdir -p /etc/nginx \
     && mkdir -p /var/www/app \
