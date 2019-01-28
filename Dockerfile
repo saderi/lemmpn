@@ -1,4 +1,4 @@
-FROM php:7.2-fpm-alpine
+FROM php:5.6.40-fpm-alpine
 
 ENV php_conf /usr/local/etc/php-fpm.conf
 ENV fpm_conf /usr/local/etc/php-fpm.d/www.conf
