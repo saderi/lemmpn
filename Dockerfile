@@ -243,6 +243,8 @@ RUN chmod 755 /start.sh
 
 RUN composer global require laravel/installer
 
+RUN ln -s /root/.composer/vendor/laravel/installer/laravel /usr/bin/laravel
+
 ENV WEBROOT=/var/www/html
 
 EXPOSE 80
