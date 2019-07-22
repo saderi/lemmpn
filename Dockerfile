@@ -241,8 +241,6 @@ RUN echo "cgi.fix_pathinfo=1" > ${php_vars} &&\
 ADD conf/start.sh /start.sh
 RUN chmod 755 /start.sh
 
-RUN composer global require laravel/installer
-
 ENV WEBROOT=/var/www/html
 
 EXPOSE 80
