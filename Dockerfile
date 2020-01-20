@@ -62,6 +62,15 @@ RUN pecl install xdebug \
     && php composer-setup.php --install-dir=/usr/bin --filename=composer \
     && php -r "unlink('composer-setup.php');"
 
+# install nodejs and yarn
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+    && apt-get install nodejs -y --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+
+# install global laravel 
+RUN composer global require laravel/installer \
+    && ln -s /root/.composer/vendor/laravel/installer/laravel /usr/bin/laravel
+
 # Uncomment this part if you need pip
 # RUN apt-get install -y python-pip \
 #        && pip install -U pip
@@ -78,14 +87,13 @@ RUN mkdir -p /etc/nginx/sites-available/ \
 ADD conf/nginx-site.conf /etc/nginx/sites-available/default.conf
 RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf
 
-
 # tweak php-fpm config
 RUN echo "cgi.fix_pathinfo=1" > ${php_vars} \
         && echo "upload_max_filesize = 100M"  >> ${php_vars} \
         && echo "post_max_size = 100M"  >> ${php_vars} \
         && echo "variables_order = \"EGPCS\""  >> ${php_vars} \
-        && echo "memory_limit = 128M"  >> ${php_vars} \
-    sed -i \
+        && echo "memory_limit = -1"  >> ${php_vars} \
+    && sed -i \
         -e "s/;catch_workers_output\s*=\s*yes/catch_workers_output = yes/g" \
         -e "s/pm.max_children = 5/pm.max_children = 4/g" \
         -e "s/pm.start_servers = 2/pm.start_servers = 3/g" \
@@ -102,9 +110,6 @@ RUN echo "cgi.fix_pathinfo=1" > ${php_vars} \
 
 ADD conf/start.sh /start.sh
 RUN chmod 755 /start.sh
-
-RUN composer global require laravel/installer \
-    && ln -s /root/.composer/vendor/laravel/installer/laravel /usr/bin/laravel
 
 ENV WEBROOT=/var/www/html
 
