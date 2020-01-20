@@ -19,6 +19,8 @@ RUN APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 \
         supervisor \
         libxslt-dev \
         libjpeg-dev \
+        libpq-dev \
+        libmemcached-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN echo "deb http://nginx.org/packages/debian `lsb_release -cs` nginx" \
@@ -49,6 +51,14 @@ RUN docker-php-ext-install bcmath \
     zip \
     opcache
 
+# Install Memcached for php
+RUN curl -L -o /tmp/memcached.tar.gz "https://github.com/php-memcached-dev/php-memcached/archive/php7.tar.gz" \
+    && mkdir -p /usr/src/php/ext/memcached \
+    && tar -C /usr/src/php/ext/memcached -zxvf /tmp/memcached.tar.gz --strip 1 \
+    && docker-php-ext-configure memcached \
+    && docker-php-ext-install memcached \
+    && rm /tmp/memcached.tar.gz
+
 RUN pecl install xdebug \
     && pecl install redis \
     && docker-php-source delete \
@@ -62,14 +72,11 @@ RUN pecl install xdebug \
     && php composer-setup.php --install-dir=/usr/bin --filename=composer \
     && php -r "unlink('composer-setup.php');"
 
-# install nodejs and yarn
+# install nodejs
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     && apt-get install nodejs -y --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
-
-# install global laravel 
-RUN composer global require laravel/installer \
-    && ln -s /root/.composer/vendor/laravel/installer/laravel /usr/bin/laravel
+    && rm -rf /var/lib/apt/lists/* \
+    && npm install -g gulp
 
 # Uncomment this part if you need pip
 # RUN apt-get install -y python-pip \
