@@ -1,10 +1,10 @@
-FROM php:7.1.25-fpm-alpine
+FROM php:7.1-fpm-alpine
 
 ENV php_conf /usr/local/etc/php-fpm.conf
 ENV fpm_conf /usr/local/etc/php-fpm.d/www.conf
 ENV php_vars /usr/local/etc/php/conf.d/docker-vars.ini
 
-ENV NGINX_VERSION 1.15.8
+ENV NGINX_VERSION 1.17.7
 
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
   && CONFIG="\
@@ -177,8 +177,6 @@ RUN apk add --no-cache \
     opcache \
     && pecl install xdebug \
     && pecl install redis \
-    && pecl install mongodb \
-    && docker-php-ext-enable redis xdebug mongodb \
     && docker-php-source delete \
     && mkdir -p /etc/nginx \
     && mkdir -p /var/www/app \
