@@ -21,6 +21,7 @@ RUN APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 \
         libjpeg-dev \
         libpq-dev \
         libmemcached-dev \
+        libgeos-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN echo "deb http://nginx.org/packages/debian `lsb_release -cs` nginx" \
@@ -58,6 +59,14 @@ RUN curl -L -o /tmp/memcached.tar.gz "https://github.com/php-memcached-dev/php-m
     && docker-php-ext-configure memcached \
     && docker-php-ext-install memcached \
     && rm /tmp/memcached.tar.gz
+
+# Install php-Geos
+RUN curl -L -o /tmp/php-geos.tar.gz "https://github.com/libgeos/php-geos/archive/master.tar.gz" \
+    && mkdir -p /usr/src/php/ext/php-geos \
+    && tar -C /usr/src/php/ext/php-geos -zxvf /tmp/php-geos.tar.gz --strip 1 \
+    && docker-php-ext-configure php-geos \
+    && docker-php-ext-install php-geos \
+    && rm /tmp/php-geos.tar.gz
 
 RUN pecl install xdebug \
     && pecl install redis \
