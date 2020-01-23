@@ -1,4 +1,4 @@
-FROM php:7.1-fpm-stretch
+FROM php:7.2-fpm-stretch
 
 ENV php_conf /usr/local/etc/php-fpm.conf
 ENV fpm_conf /usr/local/etc/php-fpm.d/www.conf
@@ -42,7 +42,6 @@ RUN docker-php-ext-install bcmath \
     iconv \
     mysqli \
     mbstring \
-    mcrypt \
     gd \
     exif \
     xsl \
@@ -86,6 +85,9 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     && apt-get install nodejs -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && npm install -g gulp
+
+RUN pecl install mcrypt-1.0.1 \
+    && docker-php-ext-enable mcrypt
 
 # Uncomment this part if you need pip
 # RUN apt-get install -y python-pip \
