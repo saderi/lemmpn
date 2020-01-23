@@ -1,4 +1,4 @@
-FROM php:7.2-fpm-stretch
+FROM php:7.3-fpm-stretch
 
 ENV php_conf /usr/local/etc/php-fpm.conf
 ENV fpm_conf /usr/local/etc/php-fpm.d/www.conf
@@ -22,6 +22,7 @@ RUN APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 \
         libpq-dev \
         libmemcached-dev \
         libgeos-dev \
+        libzip-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN echo "deb http://nginx.org/packages/debian `lsb_release -cs` nginx" \
@@ -52,7 +53,7 @@ RUN docker-php-ext-install bcmath \
     opcache
 
 # Install Memcached for php
-RUN curl -L -o /tmp/memcached.tar.gz "https://github.com/php-memcached-dev/php-memcached/archive/php7.tar.gz" \
+RUN curl -L -o /tmp/memcached.tar.gz "https://github.com/php-memcached-dev/php-memcached/archive/master.tar.gz" \
     && mkdir -p /usr/src/php/ext/memcached \
     && tar -C /usr/src/php/ext/memcached -zxvf /tmp/memcached.tar.gz --strip 1 \
     && docker-php-ext-configure memcached \
