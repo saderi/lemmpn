@@ -1,4 +1,4 @@
-FROM php:7.3-fpm-stretch
+FROM php:7.4-fpm-buster
 
 ENV php_conf /usr/local/etc/php-fpm.conf
 ENV fpm_conf /usr/local/etc/php-fpm.d/www.conf
@@ -23,6 +23,7 @@ RUN APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 \
         libmemcached-dev \
         libgeos-dev \
         libzip-dev \
+        libonig-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN echo "deb http://nginx.org/packages/debian `lsb_release -cs` nginx" \
@@ -32,10 +33,9 @@ RUN echo "deb http://nginx.org/packages/debian `lsb_release -cs` nginx" \
     && apt-get update && apt-get install -y --no-install-recommends nginx \
     && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-configure gd \
-        --with-gd \
-        --with-png-dir=/usr/include/ \
-        --with-jpeg-dir=/usr/include
+RUN docker-php-ext-configure \
+        gd \
+        --with-jpeg
 
 RUN docker-php-ext-install bcmath \
     pdo \
@@ -87,7 +87,7 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     && rm -rf /var/lib/apt/lists/* \
     && npm install -g gulp
 
-RUN pecl install mcrypt-1.0.2 \
+RUN pecl install mcrypt-1.0.3 \
     && docker-php-ext-enable mcrypt
 
 # Uncomment this part if you need pip
