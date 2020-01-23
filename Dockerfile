@@ -87,7 +87,7 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     && rm -rf /var/lib/apt/lists/* \
     && npm install -g gulp
 
-RUN pecl install mcrypt-1.0.1 \
+RUN pecl install mcrypt-1.0.2 \
     && docker-php-ext-enable mcrypt
 
 # Uncomment this part if you need pip
